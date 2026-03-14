@@ -18,7 +18,7 @@ let isRedirecting = false;
 // Interceptor para agregar token a todas las requests
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     
     // No loguear requests de rutas públicas para evitar spam en consola
     const isPublicRoute = config.url?.includes('/auth/login') || 
@@ -66,8 +66,8 @@ api.interceptors.response.use(
       // Solo redirigir si no estamos ya en la página de login y no estamos en medio de una redirección
       if (!window.location.pathname.includes('/login') && !isRedirecting) {
         isRedirecting = true;
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userData');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
         
         // Usar setTimeout para evitar problemas de react durante el render
         setTimeout(() => {

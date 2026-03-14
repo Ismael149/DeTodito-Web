@@ -73,19 +73,26 @@ const Home = () => {
             {featuredProducts.map((product) => (
               <Link
                 key={product.id}
-                to={`/products/${product.id}`}
-                className="card hover:shadow-lg transition-shadow duration-300"
+                to={`/product/${product.id}`}
+                className={`card hover:shadow-lg transition-all duration-300 group ${product.stock === 0 ? 'opacity-60 grayscale-[0.5]' : ''}`}
               >
-                <div className="h-48 bg-gray-200 rounded-t-lg overflow-hidden">
+                <div className="h-48 bg-gray-200 rounded-t-lg overflow-hidden relative">
                   {product.image_url ? (
                     <img
                       src={product.image_url}
                       alt={product.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-300 flex items-center justify-center">
                       <span className="text-gray-500">Sin imagen</span>
+                    </div>
+                  )}
+                  {product.stock === 0 && (
+                    <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                      <span className="bg-red-600 text-white font-bold px-3 py-1 rounded-full text-sm shadow-lg">
+                        SIN STOCK
+                      </span>
                     </div>
                   )}
                 </div>
@@ -100,8 +107,8 @@ const Home = () => {
                     <span className="text-2xl font-bold text-blue-600">
                       ${product.price}
                     </span>
-                    <span className="text-sm text-gray-500">
-                      {product.stock} disponibles
+                    <span className={`text-sm font-medium ${product.stock === 0 ? 'text-red-500' : 'text-gray-500'}`}>
+                      {product.stock === 0 ? 'No disponible' : `${product.stock} disponibles`}
                     </span>
                   </div>
                 </div>

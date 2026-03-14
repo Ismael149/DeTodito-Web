@@ -54,7 +54,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   };
 
   const addToCart = async (productId: number, quantity: number = 1): Promise<void> => {
-    // Verificar autenticación antes de agregar al carrito
     if (!isAuthenticated) {
       throw new Error('Debes iniciar sesión para agregar productos al carrito');
     }
@@ -62,7 +61,13 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     try {
       await cartService.addToCart(productId, quantity);
       await loadCart();
-    } catch (error) {
+    } catch (error: any) {
+      const message = error.response?.data?.message || error.message;
+      if (message.toLowerCase().includes('stock')) {
+        alert('⚠️ No hay suficiente stock para agregar este producto.');
+      } else {
+        alert('❌ Error al agregar al carrito: ' + message);
+      }
       throw error;
     }
   };
@@ -72,6 +77,12 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       throw new Error('Debes iniciar sesión para modificar el carrito');
     }
 
+    const item = cart.find(i => i.id === itemId);
+    if (item && quantity > item.stock) {
+      alert(`⚠️ Solo hay ${item.stock} unidades disponibles de este producto.`);
+      return;
+    }
+
     try {
       if (quantity === 0) {
         await removeFromCart(itemId);
@@ -79,7 +90,13 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         await cartService.updateCartItem(itemId, quantity);
         await loadCart();
       }
-    } catch (error) {
+    } catch (error: any) {
+      const message = error.response?.data?.message || error.message;
+      if (message.toLowerCase().includes('stock')) {
+        alert('⚠️ No hay suficiente stock disponible.');
+      } else {
+        alert('❌ Error al actualizar cantidad: ' + message);
+      }
       throw error;
     }
   };

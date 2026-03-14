@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@ionic/core": "^8.7.7",
     "@ionic/react": "^8.7.7",
     "axios": "^1.12.2",
     "ionicons": "^8.0.13",
+    "jspdf": "^4.2.0",
+    "jspdf-autotable": "^5.0.7",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.4"

@@ -9,6 +9,10 @@ import Register from './pages/Register';
 import Products from './pages/Products';
 import ProductDetail from './pages/ProductDetail';
 import Profile from './pages/Profile';
+import CreateProduct from './pages/Seller/CreateProduct';
+import EditProduct from './pages/Seller/EditProduct';
+import MyProducts from './pages/Seller/MyProducts';
+import Settings from './pages/Profile/Settings';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Orders from './pages/Orders';
@@ -33,6 +37,16 @@ function App() {
               <Route path="/profile" element={
                 <ProtectedRoute>
                   <Profile />
+                </ProtectedRoute>
+              } />
+              <Route path="/my-products" element={
+                <ProtectedRoute>
+                  <MyProducts />
+                </ProtectedRoute>
+              } />
+              <Route path="/edit-product/:id" element={
+                <ProtectedRoute>
+                  <EditProduct />
                 </ProtectedRoute>
               } />
               <Route path="/cart" element={

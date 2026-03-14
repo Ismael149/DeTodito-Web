@@ -20,9 +20,9 @@ export const authService = {
       console.log('✅ Login exitoso - Respuesta:', response.data);
       
       if (response.data.token) {
-        // Guardar token y datos del usuario
-        localStorage.setItem('authToken', response.data.token);
-        localStorage.setItem('userData', JSON.stringify(response.data.user));
+        // Guardar token y datos del usuario (usando llaves consistentes con la app móvil)
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         
         console.log('💾 Token guardado en localStorage:', response.data.token.substring(0, 20) + '...');
         console.log('💾 User data guardado:', response.data.user);
@@ -42,31 +42,116 @@ export const authService = {
     }
   },
 
-  async register(userData) {
+  async register(userData: any) {
     try {
       const response = await api.post('/auth/register', userData);
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user || response.data));
+      }
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       throw new Error(error.response?.data?.message || 'Error al registrar usuario');
     }
   },
 
   logout() {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userData');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     window.location.href = '/login';
   },
 
   getCurrentUser() {
-    const userData = localStorage.getItem('userData');
+    const userData = localStorage.getItem('user');
     return userData ? JSON.parse(userData) : null;
   },
 
   isAuthenticated() {
-    return !!localStorage.getItem('authToken');
+    return !!localStorage.getItem('token');
   },
 
   getToken() {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('token');
+  },
+
+  isAdmin() {
+    try {
+      const user = this.getCurrentUser();
+      if (!user) return false;
+
+      return user.is_admin === true ||
+             user.is_admin === 1 ||
+             user.is_admin === 'true' ||
+             user.is_admin === '1' ||
+             user.role === 'admin' ||
+             user.user_type === 'admin';
+    } catch (error) {
+      console.error('❌ [AUTH] Error in admin check:', error);
+      return false;
+    }
+  },
+
+  // Obtener perfil completo del usuario
+  async getProfile() {
+    try {
+      const response = await api.get('/auth/profile');
+      if (response.data) {
+        const currentUser = this.getCurrentUser();
+        const updatedUser = { ...currentUser, ...response.data };
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        return updatedUser;
+      }
+      return response.data;
+    } catch (error: any) {
+      console.error('Error getting user profile:', error);
+      throw error;
+    }
+  },
+
+  // Actualizar perfil
+  async updateProfile(userData: any) {
+    try {
+      const response = await api.put('/auth/profile', userData);
+      if (response.data) {
+        const currentUser = this.getCurrentUser();
+        const updatedUser = { ...currentUser, ...response.data };
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        return updatedUser;
+      }
+      return response.data;
+    } catch (error: any) {
+      console.error('Error updating user profile:', error);
+      throw error;
+    }
+  },
+
+  // Verificación de email
+  async requestEmailVerification(email: string) {
+    return (await api.post('/auth/verify-email/request', { email })).data;
+  },
+
+  async verifyEmail(token: string) {
+    return (await api.get(`/auth/verify-email/${token}`)).data;
+  },
+
+  async resendVerificationEmail(email: string) {
+    return (await api.post('/auth/verify-email/resend', { email })).data;
+  },
+
+  // Recuperación de contraseña
+  async requestPasswordReset(email: string) {
+    return (await api.post('/auth/password/reset-request', { email })).data;
+  },
+
+  async validateResetToken(token: string) {
+    return (await api.get(`/auth/password/validate-token/${token}`)).data;
+  },
+
+  async resetPassword(token: string, newPassword: string) {
+    return (await api.post('/auth/password/reset', { token, newPassword })).data;
+  },
+
+  async changePassword(currentPassword: string, newPassword: string) {
+    return (await api.post('/auth/change-password', { currentPassword, newPassword })).data;
   }
 };

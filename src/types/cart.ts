@@ -6,6 +6,7 @@ export interface CartItem {
   price: number;
   product_name: string;
   product_image?: string;
+  stock: number;
   created_at: string;
   updated_at: string;
 }

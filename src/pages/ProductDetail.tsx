@@ -36,7 +36,7 @@ const ProductDetail: React.FC = () => {
   const loadProduct = async () => {
     try {
       setLoading(true);
-      const productData = await productService.getProductById(id!);
+      const productData = await productService.getProduct(parseInt(id!));
       setProduct(productData);
     } catch (error) {
       console.error('Error loading product:', error);
@@ -97,8 +97,8 @@ const ProductDetail: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Imagen del producto */}
-        <div>
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+         <div>
+          <div className={`bg-white rounded-lg shadow-md overflow-hidden relative ${product.stock === 0 ? 'opacity-60 grayscale-[0.5]' : ''}`}>
             {product.image_url ? (
               <img
                 src={product.image_url}
@@ -108,6 +108,13 @@ const ProductDetail: React.FC = () => {
             ) : (
               <div className="w-full h-96 bg-gray-200 flex items-center justify-center">
                 <span className="text-gray-500">Sin imagen</span>
+              </div>
+            )}
+            {product.stock === 0 && (
+              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                <span className="bg-red-600 text-white font-bold px-6 py-2 rounded-full text-lg shadow-xl">
+                  SIN STOCK
+                </span>
               </div>
             )}
           </div>

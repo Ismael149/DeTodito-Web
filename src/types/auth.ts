@@ -3,14 +3,20 @@ export interface User {
   first_name: string;
   last_name: string;
   email: string;
+  username: string;
   phone?: string;
-  created_at?: string;
+  avatar_url?: string;
+  country?: string;
+  gender?: string;
+  role?: string;
+  created_at: string;
 }
 
 export interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
   register: (userData: RegisterData) => Promise<void>;
+  updateUser: (userData: Partial<User>) => void;
   logout: () => void;
   isAuthenticated: boolean;
   loading: boolean;
