@@ -35,7 +35,7 @@ const ChatBot: React.FC = () => {
 
     try {
       const response = await chatService.askBot(message, messages);
-      setMessages(prev => [...prev, { role: 'assistant', content: response.answer }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: response.response }]);
     } catch (error) {
       console.error('Error in chatbot:', error);
       setMessages(prev => [...prev, { role: 'assistant', content: 'Lo siento, tuve un problema técnico. ¿Podrías repetir eso?' }]);

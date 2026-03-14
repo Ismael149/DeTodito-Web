@@ -6,14 +6,14 @@ import { environment } from '../config/environment';
  * Otherwise, it prepends the backend API host.
  */
 export const formatImageUrl = (url?: string): string => {
-  if (!url) return '';
+  if (!url) return 'https://via.placeholder.com/500x500?text=DeTodito+Product';
   if (url.startsWith('http')) return url;
   
-  // Remove /api from end of apiUrl if present to get the base host
-  const baseHost = environment.apiUrl.replace(/\/api$/, '');
+  // Get base host (remove /api/ if at the end)
+  const baseHost = environment.apiUrl.replace(/\/api\/?$/, '');
   
-  // Ensure the separator is handled correctly
-  const path = url.startsWith('/') ? url : `/${url}`;
+  // Clean product path (ensure single slash between host and path)
+  const cleanPath = url.startsWith('/') ? url : `/${url}`;
   
-  return `${baseHost}${path}`;
+  return `${baseHost}${cleanPath}`;
 };

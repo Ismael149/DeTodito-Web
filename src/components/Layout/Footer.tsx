@@ -10,7 +10,7 @@ const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center space-x-2 mb-4">
               <div className="w-8 h-8 bg-blue-600 rounded-lg"></div>
-              <span className="text-xl font-bold">ComercioApp</span>
+              <span className="text-xl font-bold">DeTodito</span>
             </Link>
             <p className="text-gray-300 max-w-md">
               Tu marketplace confiable para comprar y vender productos. Conectamos compradores y vendedores de forma segura y eficiente.
@@ -40,7 +40,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
-          <p>&copy; 2024 ComercioApp. Todos los derechos reservados.</p>
+          <p>&copy; 2024 DeTodito. Todos los derechos reservados.</p>
         </div>
       </div>
     </footer>

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { cartService } from '../services/cartService';
+import { productService } from '../services/productService';
 import { CartItem, CartContextType } from '../types/cart';
 import { useAuth } from './AuthContext';
 
@@ -59,6 +60,15 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     }
 
     try {
+      // Fetch product owner to compare
+      const product = await productService.getProduct(productId);
+      const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+      
+      if (product.user_id === currentUser.id || product.seller_username === currentUser.username) {
+        alert('❌ No puedes agregar tus propios productos al carrito.');
+        return;
+      }
+
       await cartService.addToCart(productId, quantity);
       await loadCart();
     } catch (error: any) {
