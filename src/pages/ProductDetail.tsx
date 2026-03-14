@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { productService } from '../services/productService';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { formatImageUrl } from '../utils/urlUtils';
 
 interface Product {
   id: number;
@@ -101,7 +102,7 @@ const ProductDetail: React.FC = () => {
           <div className={`bg-white rounded-lg shadow-md overflow-hidden relative ${product.stock === 0 ? 'opacity-60 grayscale-[0.5]' : ''}`}>
             {product.image_url ? (
               <img
-                src={product.image_url}
+                src={formatImageUrl(product.image_url)}
                 alt={product.name}
                 className="w-full h-96 object-cover"
               />

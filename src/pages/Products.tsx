@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { productService } from '../services/productService';
+import { formatImageUrl } from '../utils/urlUtils';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -193,7 +194,7 @@ const Products = () => {
                   <div className="h-48 bg-gray-200 rounded-t-lg overflow-hidden relative">
                     {product.image_url ? (
                       <img
-                        src={product.image_url}
+                        src={formatImageUrl(product.image_url)}
                         alt={product.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />

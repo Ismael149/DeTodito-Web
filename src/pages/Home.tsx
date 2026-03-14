@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { productService } from '../services/productService';
+import { formatImageUrl } from '../utils/urlUtils';
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -28,7 +29,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Bienvenido a ComercioApp
+              Bienvenido a DeTodito
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100">
               Descubre productos increíbles y compra con confianza
@@ -79,7 +80,7 @@ const Home = () => {
                 <div className="h-48 bg-gray-200 rounded-t-lg overflow-hidden relative">
                   {product.image_url ? (
                     <img
-                      src={product.image_url}
+                      src={formatImageUrl(product.image_url)}
                       alt={product.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -129,7 +130,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              ¿Por qué elegir ComercioApp?
+              ¿Por qué elegir DeTodito?
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

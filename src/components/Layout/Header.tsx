@@ -20,7 +20,7 @@ const Header: React.FC = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-blue-600 rounded-lg"></div>
-            <span className="text-xl font-bold text-gray-900">ComercioApp</span>
+            <span className="text-xl font-bold text-gray-900">DeTodito</span>
           </Link>
 
           {/* Navegación */}

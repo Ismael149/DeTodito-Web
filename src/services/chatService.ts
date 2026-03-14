@@ -1,8 +1,8 @@
 import { api } from './api';
 
 export interface ChatMessage {
-  role: 'user' | 'model';
-  parts: { text: string }[];
+  role: 'user' | 'assistant';
+  content: string;
 }
 
 export const chatService = {
@@ -10,7 +10,10 @@ export const chatService = {
     try {
       const response = await api.post('/chatbot/ask', {
         message,
-        history
+        history: history.map(msg => ({
+          role: msg.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: msg.content }]
+        }))
       });
       return response.data;
     } catch (error: any) {
